@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- DataSource Creation -->
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/springjdbc"/>
+		<property name="username" value="sairam"/>
+		<property name="password" value="sairam"/>
+	</bean>
+	
+	<!-- JDBCTemplate Creation and DataSource dependency injection-->
+	<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- TransactionManager Creation and DataSource dependency injection-->
+	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="dataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean class="com.tsr.dao.CustomerDAO" id="customerDAO">
+		<constructor-arg name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+	<bean class="com.tsr.dao.ProductDAO" id="productDAO">
+		<constructor-arg name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>
+	
+</beans>
